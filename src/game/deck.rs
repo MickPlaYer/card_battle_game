@@ -9,13 +9,13 @@ pub struct Deck {
 impl Deck {
     pub fn new() -> Deck {
         let mut cards = Vec::new();
-        for _ in 0..4 {
+        for _ in 0..2 {
             for n in 1..=10 {
                 cards.push(Box::new(Card::Number(n)));
             }
             cards.push(Box::new(Card::Double));
             cards.push(Box::new(Card::Half));
-            cards.push(Box::new(Card::OneMore));
+            cards.push(Box::new(Card::Add));
         }
         cards.shuffle(&mut thread_rng());
         let drawn_cards = Vec::new();
@@ -37,12 +37,12 @@ impl Deck {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Card {
     Number(u32),
     Double,
     Half,
-    OneMore,
+    Add,
 }
 
 impl Display for Card {

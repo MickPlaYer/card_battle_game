@@ -1,13 +1,16 @@
+mod deck;
 mod entity_data;
 mod game_call;
 mod game_stage;
 mod player_data;
 
+use self::deck::*;
 use self::entity_data::*;
 use self::game_call::*;
 use self::game_stage::*;
 use self::player_data::*;
 
+pub use self::deck::Deck;
 pub use self::game_call::SystemCall;
 
 pub struct Game {
