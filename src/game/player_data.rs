@@ -1,13 +1,23 @@
+use crate::game::*;
 use std::fmt::Display;
 
-pub struct RawPlayerData {
+pub struct PlayerData {
     name: Option<String>,
     hit_point: Option<u32>,
     attack_point: Option<u32>,
     defence_point: Option<u32>,
 }
 
-impl RawPlayerData {
+impl PlayerData {
+    pub fn new() -> PlayerData {
+        PlayerData {
+            name: None,
+            hit_point: None,
+            attack_point: None,
+            defence_point: None,
+        }
+    }
+
     pub fn set_name(&mut self, name: String) {
         self.name = Some(name);
     }
@@ -18,46 +28,51 @@ impl RawPlayerData {
         self.defence_point = Some(def);
     }
 
-    pub fn to_player_data(&self) -> PlayerData {
-        PlayerData {
-            name: self.name.clone().unwrap_or(String::from("")),
-            hit_point: self.hit_point.unwrap_or_default(),
-            attack_point: self.attack_point.unwrap_or_default(),
-            defence_point: self.defence_point.unwrap_or_default(),
-        }
-    }
-}
-
-impl Display for RawPlayerData {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_player_data())
-    }
-}
-
-pub struct PlayerData {
-    name: String,
-    hit_point: u32,
-    attack_point: u32,
-    defence_point: u32,
-}
-
-impl PlayerData {
-    pub fn new() -> RawPlayerData {
-        RawPlayerData {
-            name: None,
-            hit_point: None,
-            attack_point: None,
-            defence_point: None,
-        }
+    pub fn to_data(&self) -> EntityData {
+        IntoEntityData(self).into()
     }
 }
 
 impl Display for PlayerData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Name: {}\nHP: {}\nATK: {}\nDEF: {}",
-            self.name, self.hit_point, self.attack_point, self.defence_point
-        )
+        write!(f, "{}", self.to_data())
+    }
+}
+
+pub trait Stats {
+    fn get_name(&self) -> &String;
+
+    fn get_hit_point(&self) -> u32;
+
+    fn get_current_hit_point(&self) -> u32;
+
+    fn set_current_hit_point(&mut self, value: u32);
+
+    fn get_attack_point(&self) -> u32;
+
+    fn get_defence_point(&self) -> u32;
+}
+
+impl Stats for PlayerData {
+    fn get_name(&self) -> &String {
+        self.name.as_ref().unwrap()
+    }
+
+    fn get_hit_point(&self) -> u32 {
+        self.hit_point.unwrap_or_default()
+    }
+
+    fn get_current_hit_point(&self) -> u32 {
+        self.get_hit_point()
+    }
+
+    fn set_current_hit_point(&mut self, _value: u32) {}
+
+    fn get_attack_point(&self) -> u32 {
+        self.attack_point.unwrap_or_default()
+    }
+
+    fn get_defence_point(&self) -> u32 {
+        self.defence_point.unwrap_or_default()
     }
 }

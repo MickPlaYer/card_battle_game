@@ -1,11 +1,11 @@
 use crate::game::*;
 
 pub struct MainStage {
-    player_data: PlayerData,
+    player_data: EntityData,
 }
 
 impl MainStage {
-    pub fn new(player_data: PlayerData) -> MainStage {
+    pub fn new(player_data: EntityData) -> MainStage {
         MainStage { player_data }
     }
 }

@@ -8,7 +8,7 @@ enum Step {
 
 pub struct NewStage {
     step: Step,
-    player_data: RawPlayerData,
+    player_data: PlayerData,
     total_points: u8,
 }
 
@@ -59,8 +59,11 @@ impl GameStage for NewStage {
             }
             Step::ConfirmStatus => {
                 if input == "yes" {
-                    let player_data = self.player_data.to_player_data();
-                    return change_stage(Box::new(MainStage::new(player_data)));
+                    let player_data = self.player_data.to_data();
+                    return change_stage(Box::new(BattleStage::new(
+                        player_data,
+                        EntityData::slime(),
+                    )));
                 } else if input == "no" {
                     self.step = Step::InputName
                 }

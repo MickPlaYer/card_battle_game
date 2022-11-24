@@ -1,7 +1,9 @@
+mod entity_data;
 mod game_call;
 mod game_stage;
 mod player_data;
 
+use self::entity_data::*;
 use self::game_call::*;
 use self::game_stage::*;
 use self::player_data::*;
@@ -40,7 +42,8 @@ impl Game {
 
     fn handle_game_call(&mut self, game_call: GameCall) {
         if let GameCall::ChangeStage(stage) = game_call {
-            self.stage = stage
+            self.stage = stage;
+            self.stage.on_enter()
         }
     }
 }
